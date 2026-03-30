@@ -45,7 +45,7 @@ export default function Navbar() {
   return (
     <header className={cn(
       "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-      scrolled ? "bg-white/95 backdrop-blur-xl border-b border-slate-200 shadow-sm" : "bg-white/90 backdrop-blur-md"
+      scrolled ? "bg-white border-b border-slate-200 shadow-sm" : "bg-white"
     )}>
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
 
@@ -147,7 +147,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-x-0 top-16 bottom-0 z-40 flex flex-col overflow-y-auto bg-white border-t border-slate-100 lg:hidden"
+            className="fixed inset-x-0 top-16 bottom-0 z-50 flex flex-col overflow-y-auto bg-white border-t border-slate-100 lg:hidden"
           >
             <div className="px-4 py-6 space-y-1">
               {[...navLinks, { label: "Contact", href: "/contact" }].map(({ label, href }) => (
