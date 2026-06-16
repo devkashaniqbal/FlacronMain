@@ -18,6 +18,7 @@ const navLinks = [
   { label: "AI Engine", href: "/ai-engine" },
   { label: "Partners", href: "/partners" },
   { label: "About", href: "/about" },
+  { label: "Contact Us", href: "/contact" },
 ];
 
 export default function Navbar({ apps }: { apps: AppDefinition[] }) {
@@ -205,57 +206,58 @@ export default function Navbar({ apps }: { apps: AppDefinition[] }) {
           </div>
         </nav>
 
-        {/* Mobile menu */}
-        <AnimatePresence>
-          {mobileOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.2 }}
-              className="mobile-menu fixed inset-x-0 top-16 bottom-0 z-50 flex flex-col overflow-y-auto bg-white border-t border-slate-100 lg:hidden"
-            >
-              <div className="px-4 py-6 space-y-1">
-                {[{ label: "Home", href: "/" }, ...navLinks, { label: "Contact", href: "/contact" }].map(({ label, href }) => (
-                  <Link key={label} href={href}
-                    className={cn(
-                      "block rounded-xl px-4 py-3 text-base font-medium transition-colors",
-                      pathname === href
-                        ? "bg-slate-100 text-flacron-navy"
-                        : "text-slate-700 hover:bg-slate-50 hover:text-flacron-navy"
-                    )}
+      </header>
+
+      {/* Mobile menu — rendered outside <header> to avoid backdrop-filter stacking context trapping fixed children */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2 }}
+            className="mobile-menu fixed inset-x-0 top-16 bottom-0 z-50 flex flex-col overflow-y-auto bg-white border-t border-slate-100 lg:hidden"
+          >
+            <div className="px-4 py-6 space-y-1">
+              {[{ label: "Home", href: "/" }, ...navLinks, { label: "Contact", href: "/contact" }].map(({ label, href }) => (
+                <Link key={label} href={href}
+                  className={cn(
+                    "block rounded-xl px-4 py-3 text-base font-medium transition-colors",
+                    pathname === href
+                      ? "bg-slate-100 text-flacron-navy"
+                      : "text-slate-700 hover:bg-slate-50 hover:text-flacron-navy"
+                  )}
+                  onClick={() => setMobileOpen(false)}>
+                  {label}
+                </Link>
+              ))}
+
+              <div className="pt-4 border-t border-slate-100">
+                <p className="px-4 pb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">Products</p>
+                {apps.map((app) => (
+                  <Link key={app.id} href={`/apps/${app.slug}`}
+                    className="flex items-center gap-3 rounded-xl px-4 py-3 hover:bg-slate-50"
                     onClick={() => setMobileOpen(false)}>
-                    {label}
+                    <AppLogo name={app.name} size={32} />
+                    <div>
+                      <p className="text-sm font-semibold text-flacron-navy">{app.name}</p>
+                      <p className="text-xs text-slate-500">{app.category}</p>
+                    </div>
                   </Link>
                 ))}
-
-                <div className="pt-4 border-t border-slate-100">
-                  <p className="px-4 pb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">Products</p>
-                  {apps.map((app) => (
-                    <Link key={app.id} href={`/apps/${app.slug}`}
-                      className="flex items-center gap-3 rounded-xl px-4 py-3 hover:bg-slate-50"
-                      onClick={() => setMobileOpen(false)}>
-                      <AppLogo name={app.name} size={32} />
-                      <div>
-                        <p className="text-sm font-semibold text-flacron-navy">{app.name}</p>
-                        <p className="text-xs text-slate-500">{app.category}</p>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-
-                <div className="pt-4 pb-8">
-                  <Link href="/book-demo"
-                    className="block w-full rounded-xl bg-[#F97316] px-6 py-3.5 text-center font-semibold text-white hover:bg-[#EA580C] transition-colors"
-                    onClick={() => setMobileOpen(false)}>
-                    Book a Demo
-                  </Link>
-                </div>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </header>
+
+              <div className="pt-4 pb-8">
+                <Link href="/book-demo"
+                  className="block w-full rounded-xl bg-[#F97316] px-6 py-3.5 text-center font-semibold text-white hover:bg-[#EA580C] transition-colors"
+                  onClick={() => setMobileOpen(false)}>
+                  Book a Demo
+                </Link>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

@@ -26,11 +26,12 @@ export default async function EcosystemPage() {
         </div>
 
         {/* Stats */}
-        <div className="mb-6 sm:mb-12 grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-4">
+        <div className="mb-6 sm:mb-12 grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-5">
           {[
             { value: `${apps.length}`, label: "Products" },
             { value: `${apps.filter(a => a.status === "live").length}`, label: "Live Now" },
-            { value: `${apps.filter(a => a.status === "coming-soon" || a.status === "beta").length}`, label: "In Dev" },
+            { value: `${apps.filter(a => a.status === "beta").length}`, label: "Beta" },
+            { value: `${apps.filter(a => a.status === "coming-soon").length}`, label: "Coming Soon" },
             { value: "6+", label: "Industries" },
           ].map((s) => (
             <div key={s.label} className="rounded-2xl border border-slate-100 bg-slate-50 px-3 py-4 text-center">

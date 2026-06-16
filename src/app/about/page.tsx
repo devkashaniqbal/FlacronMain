@@ -54,7 +54,7 @@ export default async function AboutPage() {
                 { value: `${apps.length}`, label: "AI Products" },
                 { value: "6+", label: "Industries Served" },
                 { value: "2", label: "Global Technology Partners" },
-                { value: "∞", label: "Ambition" },
+                { value: "24/7", label: "Support" },
               ].map((s) => (
                 <div key={s.label} className="rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm">
                   <p className="text-4xl font-black text-[#F97316]" style={{ fontFamily: "var(--font-space-grotesk, sans-serif)" }}>{s.value}</p>

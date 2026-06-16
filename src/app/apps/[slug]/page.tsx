@@ -170,7 +170,7 @@ export default async function AppPage({ params }: PageProps) {
       {/* 7. TECH STACK */}
       <section className="py-14 px-4 sm:px-6 lg:px-8 sm:py-16">
         <div className="mx-auto max-w-7xl">
-          <p className="mb-4 text-xs font-bold uppercase tracking-wider text-slate-400">Powered By</p>
+          <p className="mb-4 text-xs font-bold uppercase tracking-wider text-slate-400">Tech Stack</p>
           <div className="flex flex-wrap gap-3">
             {app.techStack.map((t) => (
               <span key={t} className="rounded-full border border-orange-200 bg-orange-50 px-5 py-2 text-sm font-semibold text-[#F97316]">{t}</span>

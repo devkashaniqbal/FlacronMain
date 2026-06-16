@@ -81,10 +81,10 @@ export default function APIAccessPage() {
       <section className="bg-flacron-navy px-4 pt-20 pb-12 sm:px-6 sm:pt-24 sm:pb-16 lg:px-8 relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0 particle-grid opacity-10" />
         <div className="relative z-10 mx-auto max-w-5xl">
-          <Link href="/ai-engine" className="inline-flex items-center gap-2 text-slate-400 hover:text-white text-sm mb-5 transition-colors sm:mb-7">
+          <Link href="/ai-engine" className="flex w-fit items-center gap-2 text-slate-400 hover:text-white text-sm mb-6 transition-colors sm:mb-8">
             <ArrowLeft className="h-4 w-4" /> Back to AI Engine
           </Link>
-          <div className="inline-flex items-center gap-2 rounded-full border border-orange-500/30 bg-orange-500/10 px-3 py-1.5 text-xs font-semibold text-[#F97316] mb-4 sm:px-4 sm:text-sm sm:mb-5">
+          <div className="inline-flex items-center gap-2 rounded-full border border-orange-500/30 bg-orange-500/10 px-3 py-1.5 text-xs font-semibold text-[#F97316] mb-5 sm:px-4 sm:text-sm sm:mb-6">
             <Code2 className="h-3.5 w-3.5" />
             Option 2 — API Platform Access
           </div>

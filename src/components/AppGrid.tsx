@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 type Category = AppDefinition["category"];
 type Status = AppDefinition["status"];
 
-const ALL_CATEGORIES: Category[] = ["Construction", "Business", "Finance", "Growth", "Security", "Sports", "Insurance"];
+const ALL_CATEGORIES: Category[] = ["Construction", "Business", "Growth", "Security", "Sports", "Insurance"];
 const ALL_STATUSES: Status[] = ["live", "beta", "coming-soon"];
 const statusLabel: Record<Status, string> = {
   live: "Live",

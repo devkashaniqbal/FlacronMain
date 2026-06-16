@@ -74,7 +74,7 @@ const solutionCategories = [
 export default async function SolutionsPage() {
   const apps = await getApps();
   return (
-    <div className="min-h-screen pt-6 pb-24 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen pt-20 pb-16 px-4 sm:px-6 sm:pt-24 sm:pb-24 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <SectionHeader
           eyebrow="Solutions"
@@ -83,31 +83,33 @@ export default async function SolutionsPage() {
           centered
         />
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {solutionCategories.map((cat) => {
             const catApps = apps.filter((a) => cat.apps.includes(a.slug));
             const Icon = cat.icon;
             return (
-              <div key={cat.title} className={`rounded-2xl border p-5 sm:p-6 ${cat.color}`}>
-                <div className={`inline-flex h-11 w-11 items-center justify-center rounded-xl ${cat.iconBg}`}>
+              <div key={cat.title} className={`flex flex-col rounded-2xl border p-4 sm:p-6 ${cat.color}`}>
+                <div className={`inline-flex h-10 w-10 items-center justify-center rounded-xl sm:h-11 sm:w-11 ${cat.iconBg}`}>
                   <Icon className={`h-5 w-5 ${cat.iconColor}`} />
                 </div>
-                <h3 className="mt-4 text-lg font-bold text-flacron-navy">{cat.title}</h3>
+                <h3 className="mt-3 text-base font-bold text-flacron-navy sm:mt-4 sm:text-lg">{cat.title}</h3>
                 <p className="mt-2 text-sm text-slate-500 leading-relaxed">{cat.description}</p>
-                <div className="mt-5 space-y-3">
+                <div className="mt-auto pt-4 space-y-3 sm:pt-5">
                   {catApps.map((app) => (
-                    <GlassCard key={app.id} className="p-4 flex items-center gap-3">
-                      <AppLogo name={app.name} size={36} />
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <p className="text-sm font-bold text-flacron-navy truncate">{app.name}</p>
-                          <StatusBadge status={app.status} />
+                    <GlassCard key={app.id} className="p-3 sm:p-4">
+                      <div className="flex items-center gap-3">
+                        <AppLogo name={app.name} size={34} />
+                        <div className="flex-1 min-w-0">
+                          <div className="flex flex-wrap items-center gap-1.5">
+                            <p className="text-sm font-bold text-flacron-navy">{app.name}</p>
+                            <StatusBadge status={app.status} />
+                          </div>
+                          <p className="text-xs text-slate-500 mt-0.5 line-clamp-1">{app.tagline}</p>
                         </div>
-                        <p className="text-xs text-slate-500 truncate">{app.tagline}</p>
+                        <Link href={`/apps/${app.slug}`} className="shrink-0 text-[#F97316] hover:text-[#EA580C]">
+                          <ArrowRight className="h-4 w-4" />
+                        </Link>
                       </div>
-                      <Link href={`/apps/${app.slug}`} className="shrink-0 text-[#F97316] hover:text-[#EA580C]">
-                        <ArrowRight className="h-4 w-4" />
-                      </Link>
                     </GlassCard>
                   ))}
                 </div>
@@ -116,12 +118,40 @@ export default async function SolutionsPage() {
           })}
         </div>
 
-        <div className="mt-16 text-center">
-          <p className="text-slate-500 mb-4">{"Can't find what you're looking for?"}</p>
-          <Link href="/contact"
-            className="inline-flex items-center gap-2 rounded-xl bg-[#F97316] px-7 py-3.5 text-sm font-semibold text-white hover:bg-[#EA580C] transition-colors">
-            Talk to Our Team <ArrowRight className="h-4 w-4" />
-          </Link>
+        <div className="mt-12 sm:mt-16">
+          <div className="relative overflow-hidden rounded-2xl bg-flacron-navy px-6 py-10 text-center sm:px-12 sm:py-14">
+            {/* Background glow */}
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,rgba(249,115,22,0.15)_0%,transparent_70%)]" />
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_40%_40%_at_80%_80%,rgba(37,99,235,0.1)_0%,transparent_70%)]" />
+
+            <div className="relative z-10">
+              <span className="inline-block rounded-full border border-orange-500/30 bg-orange-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-[#F97316] mb-4">
+                Custom Solutions
+              </span>
+              <h2 className="text-2xl font-black text-white sm:text-3xl lg:text-4xl" style={{ fontFamily: "var(--font-space-grotesk)" }}>
+                {"Can't find what you're looking for?"}
+              </h2>
+              <p className="mt-3 mx-auto max-w-xl text-sm text-slate-400 leading-relaxed sm:text-base">
+                Our team works with businesses to design custom AI solutions beyond our standard product catalogue. Tell us your challenge and we&apos;ll find a way.
+              </p>
+
+              <div className="mt-7 flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-4">
+                <Link href="/contact"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#F97316] px-7 py-3.5 text-sm font-semibold text-white hover:bg-[#EA580C] transition-colors shadow-[0_4px_20px_rgba(249,115,22,0.3)] sm:w-auto">
+                  Talk to Our Team <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link href="/book-demo"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white hover:bg-white/10 transition-colors sm:w-auto">
+                  Book a Demo
+                </Link>
+              </div>
+
+              {/* Trust line */}
+              <p className="mt-6 text-xs text-slate-500">
+                Microsoft Partner · IBM Certified · Responds within 1 business day
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
