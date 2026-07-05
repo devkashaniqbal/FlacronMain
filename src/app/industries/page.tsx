@@ -76,7 +76,7 @@ export default async function IndustriesPage() {
             const Icon = ind.icon;
             return (
               <div key={ind.name} className="rounded-2xl border border-slate-200 bg-white overflow-hidden">
-                <div className="grid lg:grid-cols-3">
+                <div className="grid grid-cols-1 lg:grid-cols-3">
                   {/* Left info */}
                   <div className="p-5 sm:p-8 lg:col-span-2 border-b border-slate-100 lg:border-b-0 lg:border-r">
                     <div className="flex items-center gap-3 mb-4">

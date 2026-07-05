@@ -1,14 +1,18 @@
 import Link from "next/link";
-import { ArrowRight, CheckCircle, Search, Rocket, BarChart3, Star, Quote, Building2, Shield, Briefcase, Lock, Trophy, Leaf } from "lucide-react";
+import { ArrowRight, CheckCircle, Search, Rocket, BarChart3, Star, Quote, Building2, Shield, Briefcase, Lock, Trophy, Leaf, Sparkles, MessageSquareText, CalendarCheck } from "lucide-react";
 import { getApps } from "@/lib/apps-data";
 import HeroSection from "@/components/HeroSection";
-import AppGrid from "@/components/AppGrid";
 import SectionHeader from "@/components/SectionHeader";
 import GlassCard from "@/components/GlassCard";
 import AppLogo from "@/components/AppLogo";
 import StatusBadge from "@/components/StatusBadge";
 import WaveDivider from "@/components/WaveDivider";
 import FadeIn from "@/components/FadeIn";
+import FaqAccordion from "@/components/FaqAccordion";
+import ROICalculator from "@/components/ROICalculator";
+import TrackedLink from "@/components/TrackedLink";
+import PartnerBadges from "@/components/PartnerBadges";
+import CountUp from "@/components/CountUp";
 
 export const revalidate = 60;
 
@@ -60,31 +64,70 @@ const testimonials = [
   },
 ];
 
-const partners = ["Microsoft Partner", "IBM Certified", "AWS Infrastructure", "Azure AI", "ISO 27001 Aligned"];
+const quickActions = [
+  { label: "Connect me with a sales rep", href: "/contact", icon: MessageSquareText },
+  { label: "Show me a live demo", href: "/book-demo", icon: CalendarCheck },
+  { label: "Find the right AI product", href: "/ecosystem", icon: Sparkles },
+];
+
+const faqs = [
+  { q: "What is Flacron Enterprises?", a: "Flacron is an ecosystem of AI-powered products, each purpose-built for a specific industry — from construction and insurance to cybersecurity and personal growth — sharing one infrastructure, support team, and account." },
+  { q: "How fast can I deploy a Flacron AI product?", a: "Most teams are live within days, not months. Our guided onboarding and prebuilt integrations mean you skip the long implementation cycles typical of enterprise software." },
+  { q: "Do Flacron products integrate with my existing tools?", a: "Yes. Every product is built on a shared, Microsoft and IBM-backed infrastructure with standard integrations into common CRMs, calendars, and business tools." },
+  { q: "Is my data secure?", a: "Security is core to our architecture, not an add-on. We align with ISO 27001 practices and enterprise-grade encryption across every product in the ecosystem." },
+  { q: "Can I use more than one Flacron product?", a: "Absolutely — that's the point of the ecosystem. Add products as you grow, and they work together under one relationship instead of stitching together separate vendors." },
+];
 
 export default async function HomePage() {
   const apps = await getApps();
   const liveApps = apps.filter((a) => a.status === "live").slice(0, 3);
-  const previewApps = apps.slice(0, 3);
 
   return (
     <>
       <HeroSection />
 
+      {/* ── Ask Flacron — interactive hook ── */}
+      <section className="relative overflow-hidden bg-black py-12 px-4 sm:px-6 lg:px-8 sm:py-16">
+        <div className="pointer-events-none absolute inset-0 particle-grid opacity-10" />
+        <div className="mx-auto max-w-3xl relative z-10 text-center">
+          <FadeIn>
+            <h2 className="text-2xl font-black leading-tight text-white sm:text-3xl lg:text-4xl" style={{ fontFamily: "var(--font-space-grotesk, sans-serif)" }}>
+              Tell us what you need.{" "}
+              <span className="text-[#F97316]">We&apos;ll show you the AI for it.</span>
+            </h2>
+            <Link
+              href="/ecosystem"
+              className="mt-6 flex items-center gap-3 rounded-2xl border border-white/15 bg-white/5 px-5 py-4 text-left text-sm text-slate-300 hover:border-[#F97316]/50 hover:bg-white/[0.08] transition-colors sm:mt-8 sm:px-6 sm:py-5 sm:text-base"
+            >
+              <Search className="h-5 w-5 shrink-0 text-[#F97316]" />
+              Search the ecosystem — try &ldquo;construction&rdquo; or &ldquo;lead generation&rdquo;
+            </Link>
+          </FadeIn>
+          <div className="mt-5 flex flex-col gap-2.5 sm:mt-6 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-3">
+            {quickActions.map(({ label, href, icon: Icon }, i) => (
+              <FadeIn key={label} delay={i * 0.08}>
+                <Link
+                  href={href}
+                  className="flex w-full items-center justify-center gap-2 rounded-full border border-white/15 px-4 py-2.5 text-xs font-semibold text-white hover:border-[#F97316] hover:text-[#F97316] transition-colors sm:w-auto sm:text-sm"
+                >
+                  <Icon className="h-3.5 w-3.5" />
+                  {label}
+                </Link>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── Trusted By ── */}
-      <section className="border-y border-slate-100 bg-slate-50 py-8 overflow-hidden">
+      <section className="border-y border-slate-100 bg-white py-8 overflow-hidden">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <p className="mb-5 text-center text-xs font-semibold uppercase tracking-widest text-slate-400">
             Trusted Technologies &amp; Partnerships
           </p>
-          {/* Scrollable on mobile, wrapped on desktop */}
-          <div className="flex items-center gap-8 overflow-x-auto pb-1 scrollbar-none sm:flex-wrap sm:justify-center sm:overflow-visible sm:pb-0 sm:gap-x-12 sm:gap-y-4">
-            {partners.map((p) => (
-              <span key={p} className="shrink-0 text-sm font-semibold text-slate-400 hover:text-slate-600 transition-colors cursor-default">
-                {p}
-              </span>
-            ))}
-          </div>
+          <FadeIn>
+            <PartnerBadges />
+          </FadeIn>
         </div>
       </section>
 
@@ -113,28 +156,6 @@ export default async function HomePage() {
               </FadeIn>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* ── Ecosystem Overview ── */}
-      <section className="bg-slate-50 py-10 px-4 sm:px-6 lg:px-8 sm:py-16 lg:py-24">
-        <div className="mx-auto max-w-7xl">
-          <FadeIn>
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between mb-6 sm:mb-8">
-              <SectionHeader
-                eyebrow="Our Ecosystem"
-                title="Built for every frontier."
-                description="Explore our suite of AI-powered products — each solving real problems in its industry."
-              />
-              <Link
-                href="/ecosystem"
-                className="shrink-0 self-start sm:self-auto inline-flex items-center gap-1.5 rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-600 hover:border-[#F97316] hover:text-[#F97316] transition-colors sm:px-5 sm:py-2.5"
-              >
-                View All Apps <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-          </FadeIn>
-          <AppGrid apps={previewApps} mode="preview" />
         </div>
       </section>
 
@@ -176,8 +197,47 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* ── ROI Calculator ── */}
+      <section className="py-10 px-4 sm:px-6 lg:px-8 sm:py-16 lg:py-24">
+        <div className="mx-auto max-w-7xl">
+          <SectionHeader
+            eyebrow="Calculate Your Impact"
+            title="How much could AI save your team?"
+            description="Move the sliders to see an estimate based on your team size and current manual workload."
+            centered
+          />
+          <FadeIn>
+            <ROICalculator />
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* ── Stats / Social Proof banner ── */}
+      <section className="bg-[#F97316] py-10 px-4 sm:px-6 lg:px-8 sm:py-14">
+        <FadeIn>
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-5xl font-black text-white sm:text-6xl lg:text-7xl" style={{ fontFamily: "var(--font-space-grotesk, sans-serif)" }}>
+              <CountUp value="9+" /> AI Products. One Ecosystem.
+            </p>
+            <p className="mt-3 text-sm text-orange-100 sm:text-base">
+              Businesses across six industries already run on Flacron&apos;s AI ecosystem.
+            </p>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center sm:gap-4">
+              <TrackedLink href="/ecosystem" event="cta_see_all_solutions_stats"
+                className="w-full rounded-xl bg-black px-6 py-3 text-sm font-semibold text-white hover:bg-slate-900 transition-colors text-center sm:w-auto sm:px-7 sm:py-3.5">
+                See All Solutions
+              </TrackedLink>
+              <TrackedLink href="/book-demo" event="cta_book_demo_stats"
+                className="w-full rounded-xl border-2 border-white px-6 py-3 text-sm font-semibold text-white hover:bg-white hover:text-[#F97316] transition-colors text-center sm:w-auto sm:px-7 sm:py-3.5">
+                Book a Demo
+              </TrackedLink>
+            </div>
+          </div>
+        </FadeIn>
+      </section>
+
       {/* ── Testimonials ── */}
-      <section className="bg-slate-50 py-10 px-4 sm:px-6 lg:px-8 sm:py-16 lg:py-24 border-y border-slate-100">
+      <section className="bg-white py-10 px-4 sm:px-6 lg:px-8 sm:py-16 lg:py-24 border-b border-slate-100">
         <div className="mx-auto max-w-7xl">
           <SectionHeader
             eyebrow="What Our Customers Say"
@@ -210,7 +270,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── Industries ── */}
-      <section className="py-10 px-4 sm:px-6 lg:px-8 sm:py-16 lg:py-24">
+      <section className="bg-slate-50 py-10 px-4 sm:px-6 lg:px-8 sm:py-16 lg:py-24">
         <div className="mx-auto max-w-7xl">
           <SectionHeader
             eyebrow="Industries We Serve"
@@ -221,14 +281,14 @@ export default async function HomePage() {
           <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 sm:gap-4">
             {industries.map(({ icon: Icon, ...ind }, i) => (
               <FadeIn key={ind.name} delay={i * 0.07} direction="up">
-                <Link href="/industries"
-                  className="group flex flex-col items-center rounded-2xl border border-slate-200 bg-white p-4 text-center hover:border-[#F97316]/40 hover:shadow-md transition-all sm:p-5">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F97316]/10 group-hover:bg-[#F97316]/20 transition-colors sm:h-12 sm:w-12">
-                    <Icon className="h-5 w-5 text-[#F97316] sm:h-6 sm:w-6" />
+                <TrackedLink href="/industries" event="industry_tile_click" eventData={{ industry: ind.name }}
+                  className="group flex flex-col items-center rounded-2xl bg-black p-4 text-center hover:bg-[#F97316] transition-colors sm:p-5">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 group-hover:bg-black/15 transition-colors sm:h-12 sm:w-12">
+                    <Icon className="h-5 w-5 text-[#F97316] group-hover:text-white sm:h-6 sm:w-6" />
                   </div>
-                  <p className="mt-2.5 text-xs font-bold text-flacron-navy sm:mt-3 sm:text-sm">{ind.name}</p>
-                  <p className="mt-1 text-[10px] text-slate-400 leading-snug sm:text-xs">{ind.desc}</p>
-                </Link>
+                  <p className="mt-2.5 text-xs font-bold text-white sm:mt-3 sm:text-sm">{ind.name}</p>
+                  <p className="mt-1 text-[10px] text-slate-400 group-hover:text-orange-100 leading-snug sm:text-xs">{ind.desc}</p>
+                </TrackedLink>
               </FadeIn>
             ))}
           </div>
@@ -236,7 +296,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── Why Flacron — dark ── */}
-      <section className="bg-flacron-navy py-10 px-4 sm:px-6 lg:px-8 sm:py-16 lg:py-24 relative overflow-hidden">
+      <section className="bg-black py-10 px-4 sm:px-6 lg:px-8 sm:py-16 lg:py-24 relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0 particle-grid opacity-10" />
         <div className="mx-auto max-w-7xl relative z-10">
           <SectionHeader
@@ -260,23 +320,23 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <WaveDivider fill="#FFF7ED" flip={false} />
+      <WaveDivider fill="#F97316" flip={false} />
 
       {/* ── Coming Soon teaser ── */}
-      <section className="py-10 px-4 sm:px-6 lg:px-8 sm:py-14 bg-orange-50 border-y border-orange-100">
+      <section className="py-10 px-4 sm:px-6 lg:px-8 sm:py-14 bg-[#F97316]">
         <FadeIn direction="none">
           <div className="mx-auto max-w-xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-widest text-[#F97316] mb-3 sm:text-sm">Ecosystem Expanding</p>
-            <h2 className="text-2xl font-black text-flacron-navy sm:text-3xl" style={{ fontFamily: "var(--font-space-grotesk, sans-serif)" }}>
+            <p className="text-xs font-semibold uppercase tracking-widest text-black mb-3 sm:text-sm">Ecosystem Expanding</p>
+            <h2 className="text-2xl font-black text-white sm:text-3xl" style={{ fontFamily: "var(--font-space-grotesk, sans-serif)" }}>
               More solutions are coming.
             </h2>
-            <p className="mt-3 text-sm text-slate-500 max-w-md mx-auto sm:text-base">
+            <p className="mt-3 text-sm text-orange-100 max-w-md mx-auto sm:text-base">
               We are actively building new AI products. Be first to hear about new launches.
             </p>
-            <Link href="/contact"
-              className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#F97316] px-6 py-3 text-sm font-semibold text-white hover:bg-[#EA580C] transition-colors shadow-sm sm:mt-6 sm:px-7 sm:py-3.5">
+            <TrackedLink href="/contact" event="cta_stay_updated"
+              className="mt-5 inline-flex items-center gap-2 rounded-xl bg-black px-6 py-3 text-sm font-semibold text-white hover:bg-slate-900 transition-colors shadow-sm sm:mt-6 sm:px-7 sm:py-3.5">
               Stay Updated <ArrowRight className="h-4 w-4" />
-            </Link>
+            </TrackedLink>
           </div>
         </FadeIn>
       </section>
@@ -291,20 +351,38 @@ export default async function HomePage() {
             centered
           />
           <FadeIn delay={0.15}>
+            <p className="text-xs font-semibold text-slate-400 mb-4 sm:text-sm">
+              No long contracts. No disruption to your current stack. Live in days.
+            </p>
             <div className="flex flex-col gap-3 sm:flex-row sm:justify-center sm:gap-4">
-              <Link href="/ecosystem"
+              <TrackedLink href="/ecosystem" event="cta_explore_ecosystem_final"
                 className="ripple-btn w-full rounded-xl bg-[#F97316] px-6 py-3 text-sm font-semibold text-white hover:bg-[#EA580C] transition-colors shadow-[0_4px_20px_rgba(249,115,22,0.25)] text-center sm:w-auto sm:px-8 sm:py-4 sm:text-base">
                 Explore Ecosystem
-              </Link>
-              <Link href="/book-demo"
+              </TrackedLink>
+              <TrackedLink href="/book-demo" event="cta_book_demo_final"
                 className="w-full rounded-xl border-2 border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-flacron-navy hover:border-[#F97316] hover:text-[#F97316] transition-colors text-center sm:w-auto sm:px-8 sm:py-4 sm:text-base">
                 Book a Demo
-              </Link>
-              <Link href="/contact"
+              </TrackedLink>
+              <TrackedLink href="/contact" event="cta_talk_to_sales_final"
                 className="w-full rounded-xl border-2 border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-flacron-navy hover:border-[#F97316] hover:text-[#F97316] transition-colors text-center sm:w-auto sm:px-8 sm:py-4 sm:text-base">
                 Talk to Sales
-              </Link>
+              </TrackedLink>
             </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* ── FAQ ── */}
+      <section className="bg-slate-50 py-10 px-4 sm:px-6 lg:px-8 sm:py-16 lg:py-24 border-t border-slate-100">
+        <div className="mx-auto max-w-3xl">
+          <SectionHeader
+            eyebrow="FAQ"
+            title="Questions, answered."
+            description="Everything you need to know before getting started with Flacron."
+            centered
+          />
+          <FadeIn delay={0.1}>
+            <FaqAccordion items={faqs} />
           </FadeIn>
         </div>
       </section>

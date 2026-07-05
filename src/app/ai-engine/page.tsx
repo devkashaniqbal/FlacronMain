@@ -84,6 +84,11 @@ export default function AIEnginePage() {
             </Link>
           </div>
 
+          <p className="mt-5 text-xs text-slate-400 sm:text-sm">
+            Already have API access?{" "}
+            <Link href="/dashboard/login" className="font-semibold text-[#F97316] hover:underline">Sign in to your dashboard</Link>
+          </p>
+
           {/* Pillar stats */}
           <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-12 sm:grid-cols-4 sm:gap-4">
             {pillars.map(({ icon: Icon, title, value, desc }) => (

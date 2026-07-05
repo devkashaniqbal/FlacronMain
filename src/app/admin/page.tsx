@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { AppWindow, Rocket, Clock, FlaskConical, Plus, RefreshCw, ExternalLink, Inbox } from "lucide-react";
+import { AppWindow, Rocket, Clock, FlaskConical, Plus, RefreshCw, ExternalLink, Inbox, Building2 } from "lucide-react";
 import type { AppDefinition } from "@/data/apps";
 
 const STATUS_CONFIG = {
@@ -18,6 +18,7 @@ export default function AdminDashboard() {
   const [seeding, setSeeding] = useState(false);
   const [seedMsg, setSeedMsg] = useState("");
   const [newLeads, setNewLeads] = useState<number | null>(null);
+  const [customerCount, setCustomerCount] = useState<number | null>(null);
 
   async function loadApps() {
     setLoading(true);
@@ -53,6 +54,10 @@ export default function AdminDashboard() {
         }
       })
       .catch(() => {});
+    fetch("/api/admin/customers")
+      .then((r) => r.json())
+      .then((data) => setCustomerCount((data.customers || []).length))
+      .catch(() => {});
   }, []);
 
   const counts = {
@@ -67,6 +72,7 @@ export default function AdminDashboard() {
     { label: "Live", value: counts.live, icon: Rocket, color: "text-emerald-700", bg: "bg-emerald-50", href: "/admin/apps" },
     { label: "Beta / Dev", value: counts.beta + counts["coming-soon"], icon: FlaskConical, color: "text-blue-700", bg: "bg-blue-50", href: "/admin/apps" },
     { label: "New Leads", value: newLeads ?? "—", icon: Inbox, color: "text-orange-600", bg: "bg-orange-50", href: "/admin/leads" },
+    { label: "AI Engine Customers", value: customerCount ?? "—", icon: Building2, color: "text-purple-700", bg: "bg-purple-50", href: "/admin/customers" },
   ];
 
   return (
@@ -105,7 +111,7 @@ export default function AdminDashboard() {
       )}
 
       {/* Stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 mb-8">
         {statCards.map(({ label, value, icon: Icon, color, bg, href }) => (
           <Link key={label} href={href} className="bg-white rounded-xl border border-slate-200 p-5 hover:border-[#F97316]/40 hover:shadow-sm transition-all group">
             <div className={`inline-flex items-center justify-center w-9 h-9 rounded-lg ${bg} mb-3`}>

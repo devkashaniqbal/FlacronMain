@@ -13,12 +13,18 @@ import {
   Menu,
   X,
   Inbox,
+  Building2,
+  Layers,
+  FileText,
 } from "lucide-react";
 
 const navItems = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { label: "Apps", href: "/admin/apps", icon: AppWindow },
   { label: "Leads", href: "/admin/leads", icon: Inbox },
+  { label: "AI Engine Customers", href: "/admin/customers", icon: Building2 },
+  { label: "Custom Orders", href: "/admin/custom-orders", icon: Layers },
+  { label: "Invoices", href: "/admin/invoices", icon: FileText },
   { label: "Navigation & CTAs", href: "/admin/navigation", icon: Navigation },
 ];
 
@@ -26,6 +32,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  if (pathname === "/admin/login") {
+    return <>{children}</>;
+  }
 
   async function handleLogout() {
     await fetch("/api/admin/auth", { method: "DELETE" });
@@ -95,7 +105,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   );
 
   return (
-    <div style={{ position: "fixed", inset: 0, zIndex: 9999, display: "flex", background: "#f8fafc", overflow: "hidden" }}>
+    <div className="app-shell" style={{ position: "fixed", inset: 0, zIndex: 9999, display: "flex", background: "#f8fafc", overflow: "hidden" }}>
 
       {/* Mobile backdrop */}
       {sidebarOpen && (
@@ -108,7 +118,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Sidebar — desktop always visible, mobile drawer */}
       <aside
         className={`
-          fixed lg:relative inset-y-0 left-0 z-50 w-60 shrink-0 bg-[#0f172a] flex flex-col h-full
+          app-sidebar fixed lg:relative inset-y-0 left-0 z-50 w-60 shrink-0 bg-[#0f172a] flex flex-col h-full
           transform transition-transform duration-200 ease-in-out lg:transform-none
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
         `}
@@ -119,7 +129,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Mobile top bar */}
-        <div className="lg:hidden flex items-center gap-3 px-4 py-3 bg-white border-b border-slate-200 shrink-0">
+        <div className="app-mobile-topbar lg:hidden flex items-center gap-3 px-4 py-3 bg-white border-b border-slate-200 shrink-0">
           <button
             onClick={() => setSidebarOpen(true)}
             className="p-2 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100 transition-colors"
@@ -129,7 +139,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <span className="text-sm font-bold text-[#F97316] tracking-wider">FLACRON Admin</span>
         </div>
 
-        <main className="flex-1 overflow-y-auto">
+        <main className="app-main flex-1 overflow-y-auto">
           {children}
         </main>
       </div>

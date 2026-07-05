@@ -27,7 +27,7 @@ export default function SectionHeader({ eyebrow, title, description, centered = 
       )}
       <h2
         className={cn(
-          "text-2xl font-black leading-tight sm:text-3xl lg:text-4xl",
+          "text-3xl font-black leading-[1.05] tracking-tight sm:text-4xl lg:text-5xl",
           light ? "text-white" : "text-flacron-navy"
         )}
         style={{ fontFamily: "var(--font-space-grotesk, sans-serif)" }}

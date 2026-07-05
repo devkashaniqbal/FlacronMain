@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Check, Calendar } from "lucide-react";
 import type { AppDefinition } from "@/data/apps";
 import SectionHeader from "@/components/SectionHeader";
+import CalendarEmbed from "@/components/CalendarEmbed";
 
 type State = "idle" | "loading" | "success";
 
@@ -70,8 +71,15 @@ export default function BookDemoForm({ apps }: { apps: AppDefinition[] }) {
             </div>
           </div>
 
-          {/* Form */}
+          {/* Calendar + Form */}
           <div>
+            <p className="mb-3 text-sm font-bold text-flacron-navy">Pick a time that works for you</p>
+            <CalendarEmbed />
+            <div className="my-6 flex items-center gap-3">
+              <span className="h-px flex-1 bg-slate-200" />
+              <span className="text-xs font-semibold uppercase tracking-widest text-slate-400">or send a request</span>
+              <span className="h-px flex-1 bg-slate-200" />
+            </div>
             {state === "success" ? (
               <div className="flex flex-col items-center justify-center rounded-2xl border border-green-200 bg-green-50 p-8 sm:p-16 text-center">
                 <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-100 mb-4">

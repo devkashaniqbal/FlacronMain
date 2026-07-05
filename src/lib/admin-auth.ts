@@ -20,3 +20,12 @@ export async function verifyToken(token: string): Promise<boolean> {
   const expected = await generateToken();
   return token === expected;
 }
+
+/** Checks the admin session cookie on an incoming request. Use in every /api/admin/* route handler. */
+export async function isAdminRequest(request: Request): Promise<boolean> {
+  const cookieHeader = request.headers.get("cookie") || "";
+  const match = cookieHeader.match(new RegExp(`${ADMIN_COOKIE}=([^;]+)`));
+  const token = match?.[1];
+  if (!token) return false;
+  return verifyToken(decodeURIComponent(token));
+}

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import Link from "next/link";
+import Script from "next/script";
 import Navbar from "@/components/Navbar";
 import { getApps } from "@/lib/apps-data";
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -8,7 +9,13 @@ import { ToastProvider } from "@/components/ToastProvider";
 import ScrollProgress from "@/components/ScrollProgress";
 import BackToTop from "@/components/BackToTop";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import LeadCapturePopup from "@/components/LeadCapturePopup";
+import StickyDemoCTA from "@/components/StickyDemoCTA";
+import LiveChatWidget from "@/components/LiveChatWidget";
+import NewsletterSignup from "@/components/NewsletterSignup";
 import "./globals.css";
+
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "swap", preload: true });
 const spaceGrotesk = Space_Grotesk({ variable: "--font-space-grotesk", subsets: ["latin"], display: "swap", preload: true });
@@ -61,6 +68,9 @@ const footerLinks = {
   Legal: [
     { label: "Privacy Policy", href: "/privacy" },
     { label: "Terms of Service", href: "/terms" },
+    { label: "Cancellation & Refunds", href: "/refund-policy" },
+    { label: "Disclaimer", href: "/disclaimer" },
+    { label: "Cookies Policy", href: "/cookies" },
   ],
 };
 
@@ -71,6 +81,17 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   return (
     <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} h-full`}>
       <body className="min-h-full flex flex-col bg-white text-flacron-navy antialiased">
+        {GA_ID && (
+          <>
+            <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
+            <Script id="ga-init" strategy="afterInteractive">
+              {`window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${GA_ID}');`}
+            </Script>
+          </>
+        )}
         <ThemeProvider>
           <ToastProvider>
             <ScrollProgress />
@@ -78,6 +99,9 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
             <Breadcrumbs />
             <main className="flex-1">{children}</main>
             <BackToTop />
+            <StickyDemoCTA />
+            <LeadCapturePopup />
+            <LiveChatWidget />
 
             <footer className="bg-flacron-navy text-white">
               <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
@@ -109,6 +133,13 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
                         </a>
                       ))}
                     </div>
+                  </div>
+
+                  {/* Newsletter */}
+                  <div className="lg:w-72 shrink-0">
+                    <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">Stay in the loop</p>
+                    <p className="mb-3 text-sm text-slate-400 leading-relaxed">Product updates and new AI launches, straight to your inbox.</p>
+                    <NewsletterSignup />
                   </div>
 
                   {/* Links */}

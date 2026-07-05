@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { Loader2, Trash2, Mail, Building2, Phone, MessageSquare, Tag, RefreshCw, Inbox } from "lucide-react";
+import { Loader2, Trash2, Mail, Building2, Phone, MessageSquare, Tag, RefreshCw, Inbox, UserPlus, Copy, Check } from "lucide-react";
 
 type LeadStatus = "new" | "contacted" | "qualified" | "closed";
 
@@ -18,7 +18,10 @@ interface Lead {
   source: "contact" | "book-demo";
   status: LeadStatus;
   createdAt?: { seconds: number };
+  convertedCustomerId?: string;
 }
+
+type ConversionResult = { temporaryPassword: string; loginLink: string; paymentLink: string };
 
 const STATUS_LABELS: Record<LeadStatus, string> = {
   new: "New",
@@ -55,6 +58,10 @@ export default function LeadsPage() {
   const [sourceFilter, setSourceFilter] = useState<"all" | "contact" | "book-demo" | "api-access" | "white-label">("all");
   const [expanded, setExpanded] = useState<string | null>(null);
   const [updating, setUpdating] = useState<string | null>(null);
+  const [converting, setConverting] = useState<string | null>(null);
+  const [conversionResults, setConversionResults] = useState<Record<string, ConversionResult>>({});
+  const [conversionError, setConversionError] = useState<Record<string, string>>({});
+  const [copiedLink, setCopiedLink] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -78,6 +85,26 @@ export default function LeadsPage() {
     });
     setLeads((prev) => prev.map((l) => l.id === id ? { ...l, status } : l));
     setUpdating(null);
+  }
+
+  async function makeCustomer(id: string) {
+    setConverting(id);
+    setConversionError((prev) => ({ ...prev, [id]: "" }));
+    const res = await fetch(`/api/admin/leads/${id}/make-customer`, { method: "POST" });
+    const data = await res.json();
+    setConverting(null);
+    if (res.ok) {
+      setConversionResults((prev) => ({ ...prev, [id]: { temporaryPassword: data.temporaryPassword, loginLink: data.loginLink, paymentLink: data.paymentLink } }));
+      setLeads((prev) => prev.map((l) => l.id === id ? { ...l, convertedCustomerId: data.customerId, status: "qualified" } : l));
+    } else {
+      setConversionError((prev) => ({ ...prev, [id]: data.error || "Could not create customer" }));
+    }
+  }
+
+  function copyLink(link: string) {
+    navigator.clipboard.writeText(link);
+    setCopiedLink(link);
+    setTimeout(() => setCopiedLink(null), 2000);
   }
 
   async function deleteLead(id: string) {
@@ -242,6 +269,65 @@ export default function LeadsPage() {
                       <p className="text-sm text-slate-600 leading-relaxed">{lead.message}</p>
                     </div>
                   )}
+
+                  {/* Make Customer */}
+                  <div className="mb-4">
+                    {lead.convertedCustomerId ? (
+                      <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3">
+                        <p className="text-xs font-semibold text-emerald-700 mb-1">✓ Customer account created</p>
+                        {conversionResults[lead.id] ? (
+                          <div className="space-y-1.5 mt-2">
+                            <div className="flex items-center gap-2">
+                              <span className="w-24 shrink-0 text-[11px] font-semibold text-emerald-700">Password</span>
+                              <code className="flex-1 truncate rounded bg-white border border-emerald-200 px-2 py-1 text-[11px] text-slate-600">
+                                {conversionResults[lead.id].temporaryPassword}
+                              </code>
+                              <button
+                                onClick={() => copyLink(conversionResults[lead.id].temporaryPassword)}
+                                className="flex items-center gap-1 rounded bg-emerald-600 px-2 py-1 text-[11px] font-semibold text-white hover:bg-emerald-700"
+                              >
+                                {copiedLink === conversionResults[lead.id].temporaryPassword ? <Check size={11} /> : <Copy size={11} />}
+                              </button>
+                            </div>
+                            {(["loginLink", "paymentLink"] as const).map((key) => (
+                              <div key={key} className="flex items-center gap-2">
+                                <span className="w-24 shrink-0 text-[11px] font-semibold text-emerald-700">{key === "loginLink" ? "Login link" : "Payment link"}</span>
+                                <code className="flex-1 truncate rounded bg-white border border-emerald-200 px-2 py-1 text-[11px] text-slate-600">
+                                  {conversionResults[lead.id][key]}
+                                </code>
+                                <button
+                                  onClick={() => copyLink(conversionResults[lead.id][key])}
+                                  className="flex items-center gap-1 rounded bg-emerald-600 px-2 py-1 text-[11px] font-semibold text-white hover:bg-emerald-700"
+                                >
+                                  {copiedLink === conversionResults[lead.id][key] ? <Check size={11} /> : <Copy size={11} />}
+                                </button>
+                              </div>
+                            ))}
+                            <p className="text-[11px] text-emerald-700 mt-1">Login credentials + payment link were also emailed to {lead.email} via Brevo.</p>
+                          </div>
+                        ) : (
+                          <p className="text-xs text-emerald-600">Login credentials + payment link were emailed to {lead.email}.</p>
+                        )}
+                      </div>
+                    ) : (
+                      <div>
+                        <button
+                          onClick={() => makeCustomer(lead.id)}
+                          disabled={converting === lead.id}
+                          className="flex items-center gap-2 rounded-lg bg-flacron-navy px-3 py-2 text-xs font-semibold text-white hover:bg-slate-800 transition-colors disabled:opacity-60"
+                        >
+                          <UserPlus size={13} />
+                          {converting === lead.id ? "Creating account…" : "Make Customer"}
+                        </button>
+                        <p className="mt-1.5 text-[11px] text-slate-400">
+                          Creates a dashboard account with a generated password, and emails login + payment links to {lead.email}.
+                        </p>
+                        {conversionError[lead.id] && (
+                          <p className="mt-1.5 text-[11px] text-red-500">{conversionError[lead.id]}</p>
+                        )}
+                      </div>
+                    )}
+                  </div>
 
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-xs text-slate-400 mr-1">Update status:</span>

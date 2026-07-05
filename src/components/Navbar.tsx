@@ -9,6 +9,7 @@ import type { AppDefinition } from "@/data/apps";
 import AppLogo from "./AppLogo";
 import StatusBadge from "./StatusBadge";
 import SearchModal from "./SearchModal";
+import TrackedLink from "./TrackedLink";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -121,13 +122,22 @@ export default function Navbar({ apps }: { apps: AppDefinition[] }) {
               <Search className="h-4 w-4" />
             </button>
 
-            {/* Primary CTA */}
+            {/* Customer dashboard sign in */}
             <Link
+              href="/dashboard/login"
+              className="whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:text-flacron-navy hover:bg-slate-50 transition-colors"
+            >
+              Sign In
+            </Link>
+
+            {/* Primary CTA */}
+            <TrackedLink
               href="/book-demo"
+              event="cta_book_demo_nav"
               className="ripple-btn whitespace-nowrap rounded-lg bg-[#F97316] px-4 py-2 text-sm font-semibold text-white hover:bg-[#EA580C] transition-colors shadow-sm"
             >
               Book a Demo
-            </Link>
+            </TrackedLink>
 
             {/* Mega menu */}
             <AnimatePresence>
@@ -247,11 +257,16 @@ export default function Navbar({ apps }: { apps: AppDefinition[] }) {
                 ))}
               </div>
 
-              <div className="pt-4 pb-8">
+              <div className="pt-4 pb-8 space-y-3">
                 <Link href="/book-demo"
                   className="block w-full rounded-xl bg-[#F97316] px-6 py-3.5 text-center font-semibold text-white hover:bg-[#EA580C] transition-colors"
                   onClick={() => setMobileOpen(false)}>
                   Book a Demo
+                </Link>
+                <Link href="/dashboard/login"
+                  className="block w-full rounded-xl border-2 border-slate-200 px-6 py-3.5 text-center font-semibold text-flacron-navy hover:border-[#F97316] hover:text-[#F97316] transition-colors"
+                  onClick={() => setMobileOpen(false)}>
+                  Sign In to Dashboard
                 </Link>
               </div>
             </div>

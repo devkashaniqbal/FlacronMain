@@ -16,8 +16,11 @@ export default function GlassCard({ children, className, priority = "default", t
   const ref = useRef<HTMLDivElement>(null);
 
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
-    if (!tilt || !ref.current) return;
+    if (!ref.current) return;
     const rect = ref.current.getBoundingClientRect();
+    ref.current.style.setProperty("--mx", `${e.clientX - rect.left}px`);
+    ref.current.style.setProperty("--my", `${e.clientY - rect.top}px`);
+    if (!tilt) return;
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
     ref.current.style.transform = `perspective(600px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateY(-4px)`;
@@ -36,7 +39,7 @@ export default function GlassCard({ children, className, priority = "default", t
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
       style={{ transition: "transform 0.18s ease" }}
       className={cn(
-        "relative rounded-2xl border bg-white transition-shadow duration-300",
+        "cursor-glow relative rounded-2xl border bg-white transition-shadow duration-300",
         isFeatured
           ? "border-[#F97316]/30 shadow-[0_8px_40px_rgba(249,115,22,0.12)]"
           : "border-slate-200 shadow-sm hover:border-[#F97316]/30 hover:shadow-[0_8px_32px_rgba(249,115,22,0.1)]",

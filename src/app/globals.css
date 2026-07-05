@@ -176,3 +176,42 @@
     opacity: 0;
   }
 }
+
+/* ─── Cursor-follow glow ─── */
+.cursor-glow {
+  position: relative;
+  isolation: isolate;
+}
+.cursor-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle 160px at var(--mx, 50%) var(--my, 50%), rgba(249,115,22,0.25), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+.cursor-glow:hover::before {
+  opacity: 1;
+}
+
+/* Admin shell — let invoice/print views escape the fixed-position app chrome */
+@media print {
+  .app-shell {
+    position: static !important;
+    inset: auto !important;
+    display: block !important;
+    overflow: visible !important;
+    z-index: auto !important;
+  }
+  .app-sidebar,
+  .app-mobile-topbar,
+  .print-hidden {
+    display: none !important;
+  }
+  .app-main {
+    overflow: visible !important;
+  }
+}

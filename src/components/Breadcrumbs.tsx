@@ -24,7 +24,7 @@ const labels: Record<string, string> = {
 
 export default function Breadcrumbs() {
   const pathname = usePathname();
-  if (pathname === "/") return null;
+  if (pathname === "/" || pathname.startsWith("/admin") || pathname.startsWith("/dashboard")) return null;
 
   const segments = pathname.split("/").filter(Boolean);
   const crumbs = segments.map((seg, i) => ({
