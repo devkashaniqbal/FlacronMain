@@ -96,11 +96,11 @@ export default function LeadCapturePopup() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 24, scale: 0.96 }}
             transition={{ type: "spring", stiffness: 320, damping: 28 }}
-            className="fixed inset-x-4 bottom-4 z-[61] mx-auto max-w-md overflow-hidden rounded-2xl bg-black shadow-2xl sm:bottom-auto sm:left-1/2 sm:top-1/2 sm:inset-x-auto sm:-translate-x-1/2 sm:-translate-y-1/2"
+            className="fixed inset-x-4 bottom-4 z-[61] mx-auto max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl sm:bottom-auto sm:left-1/2 sm:top-1/2 sm:inset-x-auto sm:-translate-x-1/2 sm:-translate-y-1/2"
           >
             <button
               onClick={close}
-              className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full text-slate-400 hover:bg-white/10 hover:text-white transition-colors"
+              className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors"
               aria-label="Close"
             >
               <X className="h-4 w-4" />
@@ -109,11 +109,11 @@ export default function LeadCapturePopup() {
             <div className="p-6 sm:p-8">
               {state === "success" ? (
                 <div className="flex flex-col items-center gap-3 py-6 text-center">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-green-500/15 border border-green-500/30">
-                    <Check className="h-7 w-7 text-green-400" />
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-green-500/10 border border-green-500/30">
+                    <Check className="h-7 w-7 text-green-600" />
                   </div>
-                  <p className="text-lg font-bold text-white">You&apos;re in.</p>
-                  <p className="text-sm text-slate-400">Our team will follow up with a tailored next step shortly.</p>
+                  <p className="text-lg font-bold text-slate-900">You&apos;re in.</p>
+                  <p className="text-sm text-slate-500">Our team will follow up with a tailored next step shortly.</p>
                 </div>
               ) : (
                 <>
@@ -121,10 +121,10 @@ export default function LeadCapturePopup() {
                     <Sparkles className="h-5 w-5 text-[#F97316]" />
                     <p className="text-xs font-semibold uppercase tracking-widest text-[#F97316]">Before you go</p>
                   </div>
-                  <h3 className="text-xl font-black text-white sm:text-2xl" style={{ fontFamily: "var(--font-space-grotesk, sans-serif)" }}>
+                  <h3 className="text-xl font-black text-slate-900 sm:text-2xl" style={{ fontFamily: "var(--font-space-grotesk, sans-serif)" }}>
                     Get a free AI readiness audit.
                   </h3>
-                  <p className="mt-2 text-sm text-slate-400 leading-relaxed">
+                  <p className="mt-2 text-sm text-slate-500 leading-relaxed">
                     Tell us where to send it — we&apos;ll show you exactly where AI can save your team the most time.
                   </p>
                   <form onSubmit={handleSubmit} className="mt-5 flex flex-col gap-3">
@@ -133,7 +133,7 @@ export default function LeadCapturePopup() {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="Your name"
-                      className="w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#F97316]/40 focus:border-[#F97316] transition-colors"
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#F97316]/40 focus:border-[#F97316] transition-colors"
                     />
                     <input
                       type="email"
@@ -141,7 +141,7 @@ export default function LeadCapturePopup() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Work email"
-                      className="w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#F97316]/40 focus:border-[#F97316] transition-colors"
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#F97316]/40 focus:border-[#F97316] transition-colors"
                     />
                     <button
                       type="submit"
@@ -153,7 +153,7 @@ export default function LeadCapturePopup() {
                       {state === "loading" ? "Sending..." : "Send Me the Audit"}
                     </button>
                   </form>
-                  <p className="mt-3 text-center text-xs text-slate-500">No spam. Unsubscribe anytime.</p>
+                  <p className="mt-3 text-center text-xs text-slate-400">No spam. Unsubscribe anytime.</p>
                 </>
               )}
             </div>
