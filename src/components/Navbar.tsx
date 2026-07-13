@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -68,10 +69,9 @@ export default function Navbar({ apps }: { apps: AppDefinition[] }) {
       )}>
         <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
 
-          {/* Wordmark */}
-          <Link href="/" className="flex shrink-0 items-center gap-2">
-            <span className="text-xl font-black tracking-wider text-[#F97316]">FLACRON</span>
-            <span className="hidden text-xs font-medium text-slate-400 sm:block">Enterprises</span>
+          {/* Logo */}
+          <Link href="/" className="flex shrink-0 items-center">
+            <Image src="/logo.png" alt="Flacron Enterprises" width={44} height={44} className="h-11 w-11 object-contain" priority />
           </Link>
 
           {/* Desktop nav — centre */}

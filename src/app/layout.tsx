@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
+import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
 import Navbar from "@/components/Navbar";
@@ -13,6 +14,7 @@ import LeadCapturePopup from "@/components/LeadCapturePopup";
 import StickyDemoCTA from "@/components/StickyDemoCTA";
 import LiveChatWidget from "@/components/LiveChatWidget";
 import NewsletterSignup from "@/components/NewsletterSignup";
+import SocialLinks from "@/components/SocialLinks";
 import "./globals.css";
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
@@ -109,30 +111,17 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
                 <div className="flex flex-col gap-12 lg:flex-row">
                   {/* Brand */}
                   <div className="lg:w-64 shrink-0">
-                    <Link href="/">
-                      <span className="text-2xl font-black tracking-wider text-[#F97316]">FLACRON</span>
-                      <span className="ml-2 text-sm font-medium text-slate-400">Enterprises</span>
+                    <Link href="/" className="flex items-center">
+                      <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-white p-1.5">
+                        <Image src="/logo.png" alt="Flacron Enterprises" width={48} height={48} className="h-full w-full object-contain" />
+                      </span>
                     </Link>
                     <p className="mt-4 text-sm text-slate-400 leading-relaxed">
                       AI Apps for a Smarter World. Building intelligent solutions for business growth, automation, and digital transformation.
                     </p>
                     <p className="mt-4 text-xs text-slate-500">410 E 95th St, Brooklyn, NY 11212</p>
                     <p className="mt-1 text-xs text-slate-500">929-444-1275 · Contact@flacronenterprises.com</p>
-                    <div className="mt-5 flex flex-wrap gap-2">
-                      {[
-                        { label: "LinkedIn", href: "https://linkedin.com/company/flacronenterprises" },
-                        { label: "Instagram", href: "https://instagram.com/flacronenterprises" },
-                        { label: "X", href: "https://x.com/flacronenterprises" },
-                        { label: "Facebook", href: "https://facebook.com/flacronenterprises" },
-                        { label: "TikTok", href: "https://tiktok.com/@flacronenterprises" },
-                        { label: "YouTube", href: "https://youtube.com/@flacronenterprises" },
-                      ].map(({ label, href }) => (
-                        <a key={label} href={href} target="_blank" rel="noopener noreferrer"
-                          className="rounded-lg border border-white/10 px-3 py-1.5 text-xs font-medium text-slate-400 hover:text-white hover:border-white/30 transition-colors">
-                          {label}
-                        </a>
-                      ))}
-                    </div>
+                    <SocialLinks className="mt-5" />
                   </div>
 
                   {/* Newsletter */}
